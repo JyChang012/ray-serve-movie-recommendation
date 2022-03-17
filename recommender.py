@@ -13,7 +13,7 @@ app = FastAPI()
 
 
 @serve.deployment(name='recommend', num_replicas=4)
-@serve.ingress(app)  # use the default name SVDRecommender
+@serve.ingress(app)
 class SVDRecommender:
 
     def __init__(self, factors=100):
@@ -40,7 +40,7 @@ class SVDRecommender:
             inner_uid = self.trainset.to_inner_uid(user_id)
             rst = self.algo.pu[inner_uid] @ self.algo.qi.T + self.algo.bi + self.algo.bu[inner_uid]
         except ValueError:
-            # if user not in train set
+            # if user not in train set, simply use average
             rst = self.mean_pu @ self.algo.qi.T + self.algo.bi + self.mean_bu
         if add_noise:
             rst += .05 * np.random.randn(self.algo.qi.shape[0])
