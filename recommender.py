@@ -12,7 +12,7 @@ serve.start(detached=True, http_options={"host": "0.0.0.0"})  # the "0.0.0.0" al
 app = FastAPI()
 
 
-@serve.deployment()
+@serve.deployment(name='recommend', num_replicas=4)
 @serve.ingress(app)  # use the default name SVDRecommender
 class SVDRecommender:
 
